@@ -31,46 +31,47 @@ if (process.env.NODE_ENV !== "production") {
     })
   );
 }
-//Function to add two numbers
-const add = (n1, n2) => {
-  return n1 + n2;
+
+// Mathematical operation functions
+const operations = {
+  add: (n1, n2) => n1 + n2,
+  subtract: (n1, n2) => n1 - n2,
+  multiply: (n1, n2) => n1 * n2,
+  divide: (n1, n2) => {
+    if (n2 === 0) throw new Error("Division by zero is not allowed");
+    return n1 / n2;
+  },
 };
-// API Route for Addition
-app.get("/add", (req, res) => {
+// Universal route handler for operations
+const handleOperation = (operation, req, res) => {
   try {
-    // Parse query parameters as floating point numbers
     const n1 = parseFloat(req.query.n1);
     const n2 = parseFloat(req.query.n2);
-    if (isNaN(n1)) {
-      logger.error("n1 is incorrectly defined");
-      throw new Error("n1 incorrectly defined");
-    }
-    // Validate the inputs
-    if (isNaN(n2)) {
-      logger.error("n2 is incorrectly defined");
-      throw new Error("n2 incorrectly defined");
+
+    if (isNaN(n1) || isNaN(n2)) {
+      logger.error(`Invalid input: n1=${req.query.n1}, n2=${req.query.n2}`);
+      throw new Error("Invalid input: Both n1 and n2 must be numbers");
     }
 
-    if (n1 === NaN || n2 === NaN) {
-      console.log();
-      throw new Error("Parsing Error");
-    }
-    // Log the received parameters
-    logger.info("Parameters " + n1 + " and " + n2 + " received for addition");
-    // Perform addition
-    const result = add(n1, n2);
-    // Perform addition
-    res.status(200).json({ statuscocde: 200, data: result });
+    const result = operations[operation](n1, n2);
+    logger.info(
+      `Operation: ${operation}, Parameters: ${n1}, ${n2}, Result: ${result}`
+    );
+
+    res.status(200).json({ statuscode: 200, operation, data: result });
   } catch (error) {
-    // Log errors
-    console.error(error);
-    // Return error response
-    res.status(500).json({ statuscocde: 500, msg: error.toString() });
+    logger.error(error.message);
+    res.status(500).json({ statuscode: 500, msg: error.message });
   }
-});
-// Define the port number
+};
+
+// API Routes
+app.get("/add", (req, res) => handleOperation("add", req, res));
+app.get("/subtract", (req, res) => handleOperation("subtract", req, res));
+app.get("/multiply", (req, res) => handleOperation("multiply", req, res));
+app.get("/divide", (req, res) => handleOperation("divide", req, res));
+
 const port = 3040;
-// Start the server
 app.listen(port, () => {
-  console.log("hello i'm listening to port " + port);
+  console.log(`Server running on port ${port}`);
 });

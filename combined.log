@@ -1,2 +1,9 @@
 {"level":"error","message":"n1 is incorrectly defined","service":"add-service"}
 {"level":"info","message":"Parameters 5 and 10 received for addition","service":"add-service"}
+{"level":"info","message":"Parameters 5 and 10 received for addition","service":"add-service"}
+{"level":"info","message":"Parameters 4 and 10 received for addition","service":"add-service"}
+{"level":"info","message":"Operation: add, Parameters: 4, 10, Result: 14","service":"add-service"}
+{"level":"info","message":"Operation: subtract, Parameters: 4, 10, Result: -6","service":"add-service"}
+{"level":"info","message":"Operation: multiply, Parameters: 4, 10, Result: 40","service":"add-service"}
+{"level":"info","message":"Operation: subtract, Parameters: 4, 10, Result: -6","service":"add-service"}
+{"level":"info","message":"Operation: divide, Parameters: 4, 10, Result: 0.4","service":"add-service"}
